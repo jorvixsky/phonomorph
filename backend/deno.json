@@ -1,9 +1,10 @@
 {
   "imports": {
-    "hono": "jsr:@hono/hono@^4.8.4"
+    "hono": "jsr:@hono/hono@^4.8.4",
+    "twilio": "npm:twilio@^5.7.2"
   },
   "tasks": {
-    "start": "deno run --allow-net main.ts"
+    "start": "deno run --allow-net --allow-env --env-file main.ts"
   },
   "compilerOptions": {
     "jsx": "precompile",
