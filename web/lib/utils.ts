@@ -45,3 +45,19 @@ export function clearAuth(): void {
   localStorage.removeItem('authToken');
   localStorage.removeItem('phoneNumber');
 }
+
+// Wallet utilities - safe for SSR
+export function getWalletAddress(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('walletAddress');
+}
+
+export function setWalletAddress(address: string): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem('walletAddress', address);
+}
+
+export function removeWalletAddress(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem('walletAddress');
+}

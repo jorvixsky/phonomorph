@@ -181,7 +181,7 @@ export default function VerifyPage() {
                                 disabled={isLoading}
                                 className="text-sm text-gray-600 hover:text-gray-800 underline disabled:opacity-50"
                             >
-                                Didn't receive the code? Resend
+                                Didn&apos;t receive the code? Resend
                             </button>
                         </div>
                     )}

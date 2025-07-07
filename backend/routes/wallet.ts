@@ -1,12 +1,12 @@
 import { Hono } from 'hono'
 import { verify } from 'hono/jwt'
 import { Client } from "https://deno.land/x/postgres@v0.17.0/mod.ts";
-import { generateMnemonic, privateKeyToAccount } from 'npm:viem/accounts'
+import { english, generateMnemonic, mnemonicToAccount } from 'npm:viem/accounts'
 
 interface Wallet {
     phone_number: string;
-    private_key: string;
-    public_key: string;
+    mnemonic: string;
+    address: string;
 }
 
 const db = new Client({
@@ -39,7 +39,7 @@ wallet.get('/create', async (c) => {
             return c.json({ error: 'Account has already been created' }, 400)
         }
 
-        const mnemonic = generateMnemonic()
+        const mnemonic = generateMnemonic(english)
         const address = mnemonicToAccount(mnemonic).address
 
 
@@ -70,12 +70,31 @@ wallet.get('/get', async (c) => {
             return c.json({ error: 'Wallet not found' }, 404)
         }
 
-        return c.json({ publicKey: result.rows[0].public_key, privateKey: result.rows[0].private_key })
+        return c.json({ address: result.rows[0].address })
     } catch (error) {
         console.error(error)
         return c.json({ error: 'Internal server error' }, 500)
     } finally {
         await db.end()
+    }
+})
+
+wallet.post('/import-address', async (c) => {
+    try {
+        const { sub } = await verify(c.req.header('Authorization')?.split(' ')[1]!, Deno.env.get('JWT_SECRET')!)
+
+        const { mnemonic } = await c.req.json()
+
+        const address = mnemonicToAccount(mnemonic).address
+
+        await db.queryObject(`
+            INSERT INTO public.wallets (phone_number, mnemonic, address) VALUES ($1, $2, $3)
+        `, [sub, mnemonic, address])
+
+        return c.json({ address })
+    } catch (error) {
+        console.error(error)
+        return c.json({ error: 'Internal server error' }, 500)
     }
 })
 
