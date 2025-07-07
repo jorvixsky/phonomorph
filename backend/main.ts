@@ -1,5 +1,7 @@
 import { Hono } from 'hono'
 import auth from './routes/auth.ts'
+import wallet from './routes/wallet.ts'
+import { jwt } from "hono/jwt";
 
 const app = new Hono()
 
@@ -11,7 +13,13 @@ app.get('/health', (c) => {
   })
 })
 
-// Mount phone routes
+app.use('/wallet/*', jwt(
+  {
+    secret: Deno.env.get('JWT_SECRET')!,
+  }
+))
+
+app.route('/wallet', wallet)
 app.route('/auth', auth)
 
 Deno.serve(app.fetch)

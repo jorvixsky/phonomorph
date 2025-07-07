@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
-import { sign } from 'hono/jwt'
+import { sign, verify } from 'hono/jwt'
 import twilio from 'twilio'
-
 
 const twilioClient = twilio(Deno.env.get('TWILIO_SID')!, Deno.env.get('TWILIO_AUTH_TOKEN')!)
 
