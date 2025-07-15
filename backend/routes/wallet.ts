@@ -3,7 +3,7 @@ import { verify } from 'hono/jwt'
 import { Client } from "https://deno.land/x/postgres@v0.17.0/mod.ts";
 import { english, generateMnemonic, mnemonicToAccount } from 'npm:viem/accounts'
 import { morphHolesky, morphismUSDT } from '../lib/chain.ts'
-import { createWalletClient, createPublicClient, http, parseUnits, getAddress, formatEther } from 'npm:viem'
+import { createWalletClient, http, parseUnits, getAddress } from 'npm:viem'
 
 interface Wallet {
     phone_number: string;
@@ -151,26 +151,6 @@ wallet.post('/send', async (c) => {
             chain: morphHolesky,
             transport: http()
         })
-
-        // Create public client to check ETH balance
-        const publicClient = createPublicClient({
-            chain: morphHolesky,
-            transport: http()
-        })
-
-        // Check ETH balance for gas fees
-        const ethBalance = await publicClient.getBalance({
-            address: getAddress(senderWallet.address)
-        })
-
-        // Minimum ETH required for gas fees (approximately 0.001 ETH)
-        const minEthForGas = parseUnits('0.001', 18)
-
-        if (ethBalance < minEthForGas) {
-            return c.json({
-                error: `Insufficient ETH balance for gas fees. You need at least ${formatEther(minEthForGas)} ETH to send USDT tokens. Current ETH balance: ${formatEther(ethBalance)} ETH`
-            }, 400)
-        }
 
         // Send USDT token to recipient's address
         const hash = await walletClient.writeContract({

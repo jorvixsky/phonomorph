@@ -13,11 +13,10 @@ import { getAuthToken, isAuthenticated } from '@/lib/utils'
 interface SendTransactionProps {
   walletAddress?: string
   currentBalance?: string
-  ethBalance?: string
   onCancel?: () => void
 }
 
-export default function SendTransaction({ walletAddress, currentBalance, ethBalance, onCancel }: SendTransactionProps) {
+export default function SendTransaction({ walletAddress, currentBalance, onCancel }: SendTransactionProps) {
   const [recipient, setRecipient] = useState('')
   const [amount, setAmount] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -155,15 +154,14 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
 
   const handleMaxAmount = () => {
     if (currentBalance) {
-      // For USDT tokens, we can send the full balance (gas fees are paid in ETH)
+      // For USDT tokens, we can send the full balance
       const maxSendable = parseFloat(currentBalance)
       setAmount(maxSendable.toString())
       validateAmount(maxSendable.toString())
     }
   }
 
-  const hasLowEthBalance = ethBalance && parseFloat(ethBalance) < 0.001
-  const isFormValid = recipient && amount && !recipientError && !amountError && !isLoading && !hasLowEthBalance
+  const isFormValid = recipient && amount && !recipientError && !amountError && !isLoading
 
   if (success && transactionHash) {
     return (
@@ -175,85 +173,33 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
                 <CheckCircle className="h-8 w-8 text-white" />
               </div>
             </div>
-                         <CardTitle className="text-xl text-green-700">Transaction Sent!</CardTitle>
+            <CardTitle className="text-xl text-green-700">Money Sent!</CardTitle>
              <CardDescription>
-               Your transaction has been sent to {recipient}
+              Your payment has been sent to {recipient}
              </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-                         <div className="space-y-2">
-               <Label>Transaction Hash</Label>
-               <div className="bg-muted p-3 rounded border font-mono text-sm break-all">
-                 {transactionHash}
-               </div>
-               <div className="flex gap-2">
-                 <Button
-                   variant="outline"
-                   size="sm"
-                   onClick={() => navigator.clipboard.writeText(transactionHash)}
-                   className="flex-1"
-                 >
-                   Copy Hash
-                 </Button>
-                                    <Button
-                     variant="outline"
-                     size="sm"
-                     onClick={() => window.open(`https://explorer-holesky.morphl2.io/tx/${transactionHash}`, '_blank')}
-                     className="flex-1"
-                   >
-                     <ExternalLink className="h-4 w-4 mr-1" />
-                     View on Explorer
-                   </Button>
-               </div>
-             </div>
-            
-                         <div className="space-y-3">
-               <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-                 <div className="flex items-center gap-3 mb-3">
-                   <div className="bg-blue-500 rounded-full p-1">
-                     <Clock className="h-4 w-4 text-white" />
+          <CardContent className="space-y-6">
+            <div className="text-center space-y-4">
+              <div className="bg-green-50 dark:bg-green-950/20 rounded-lg p-6 border border-green-200 dark:border-green-800">
+                <div className="space-y-3">
+                  <div className="text-2xl font-bold text-green-700 dark:text-green-300">
+                    ${parseFloat(amount).toFixed(2)}
                    </div>
-                   <div>
-                     <h4 className="font-medium text-blue-900 dark:text-blue-100">
-                       Transaction Status: Pending
-                     </h4>
-                     <p className="text-sm text-blue-700 dark:text-blue-300">
-                       Your transaction is being processed on the blockchain
-                     </p>
-                   </div>
-                 </div>
-                 <div className="space-y-2 text-sm">
-                   <div className="flex justify-between">
-                     <span className="text-blue-700 dark:text-blue-300">Amount:</span>
-                     <span className="font-mono text-blue-900 dark:text-blue-100">{amount} USDT</span>
-                   </div>
-                   <div className="flex justify-between">
-                     <span className="text-blue-700 dark:text-blue-300">To Phone:</span>
-                     <span className="font-mono text-blue-900 dark:text-blue-100">{recipient}</span>
-                   </div>
-                   <div className="flex justify-between">
-                     <span className="text-blue-700 dark:text-blue-300">To Address:</span>
-                     <span className="font-mono text-blue-900 dark:text-blue-100 break-all">{recipientAddress}</span>
-                   </div>
-                   <div className="flex justify-between">
-                     <span className="text-blue-700 dark:text-blue-300">Token:</span>
-                     <span className="text-blue-900 dark:text-blue-100">Morphism USDT</span>
-                   </div>
-                 </div>
-               </div>
-             </div>
+                  <div className="text-sm text-green-600 dark:text-green-400">
+                    Sent to {recipient}
+                  </div>
+                </div>
+              </div>
 
-             <Alert>
-               <Clock className="h-4 w-4" />
-               <AlertDescription>
-                 <div className="space-y-1">
-                   <p className="font-medium">Transaction submitted successfully!</p>
-                   <p className="text-sm">
-                     Your transaction has been sent to <strong>{recipient}</strong> and may take a few minutes to confirm on the blockchain. You can track its progress using the transaction hash above.
-                   </p>
-                 </div>
-               </AlertDescription>
-             </Alert>
+              <div className="text-center space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Your payment has been sent successfully!
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  The recipient will receive it shortly.
+                </p>
+              </div>
+            </div>
 
             <div className="flex gap-2">
                              <Button
@@ -265,7 +211,7 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
                  }}
                  className="flex-1"
                >
-                 Send Another
+                Send Again
                </Button>
               <Button
                 onClick={() => router.push('/dashboard')}
@@ -289,7 +235,7 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
             Send Transaction
           </CardTitle>
           <CardDescription>
-            Send USDT to another user by phone number
+            Send money to another user by phone number
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -318,7 +264,7 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
             {/* Amount */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Label htmlFor="amount">Amount (USDT)</Label>
+                <Label htmlFor="amount">Amount ($)</Label>
                 {currentBalance && (
                   <Button
                     type="button"
@@ -327,7 +273,7 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
                     onClick={handleMaxAmount}
                     className="h-auto p-0 text-xs"
                   >
-                    Max: {parseFloat(currentBalance).toFixed(4)} USDT
+                    Max: ${parseFloat(currentBalance).toFixed(2)}
                   </Button>
                 )}
               </div>
@@ -347,22 +293,13 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
 
             {/* Current Balance Display */}
             {currentBalance && (
-              <div className="bg-muted p-3 rounded space-y-2">
+              <div className="bg-muted p-3 rounded text-center">
                 <p className="text-sm text-muted-foreground">
-                  USDT Balance: <span className="font-mono">{parseFloat(currentBalance).toFixed(4)} USDT</span>
+                  Available Balance
                 </p>
-                {ethBalance && (
-                  <>
-                    <p className="text-sm text-muted-foreground">
-                      ETH Balance: <span className="font-mono">{parseFloat(ethBalance).toFixed(6)} ETH</span>
-                    </p>
-                    {parseFloat(ethBalance) < 0.001 && (
-                      <p className="text-xs text-orange-600 dark:text-orange-400">
-                        ⚠️ Low ETH balance - you may need more ETH for transaction fees
-                      </p>
-                    )}
-                  </>
-                )}
+                <p className="text-lg font-semibold">
+                  ${parseFloat(currentBalance).toFixed(2)}
+                </p>
               </div>
             )}
 
@@ -374,20 +311,7 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
               </Alert>
             )}
 
-            {/* Low ETH Balance Warning */}
-            {hasLowEthBalance && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  <div className="space-y-1">
-                    <p className="font-medium">Insufficient ETH for transaction fees</p>
-                    <p className="text-sm">
-                      You need at least 0.001 ETH to send USDT tokens. Please add ETH to your wallet first.
-                    </p>
-                  </div>
-                </AlertDescription>
-              </Alert>
-            )}
+
 
             {/* Action Buttons */}
             <div className="flex gap-2">
@@ -412,13 +336,9 @@ export default function SendTransaction({ walletAddress, currentBalance, ethBala
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     Sending...
                   </>
-                ) : hasLowEthBalance ? (
-                  <>
-                    Insufficient ETH for fees
-                  </>
                 ) : (
                   <>
-                    Send Transaction
+                      Send Money
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </>
                 )}

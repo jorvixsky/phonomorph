@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import SendTransaction from '@/components/wallet/send-transaction'
 import { getAuthToken, isAuthenticated, getWalletAddress } from '@/lib/utils'
-import { createPublicClient, http, formatUnits, formatEther } from 'viem'
+import { createPublicClient, http, formatUnits } from 'viem'
 import { wagmiConfig, morphismUSDT } from '@/lib/wagmi'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
@@ -14,7 +14,6 @@ import { ArrowLeft, AlertCircle, Loader2 } from 'lucide-react'
 export default function SendPage() {
   const [walletAddress, setWalletAddress] = useState<string>('')
   const [balance, setBalance] = useState<string>('')
-  const [ethBalance, setEthBalance] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -86,36 +85,28 @@ export default function SendPage() {
 
   const fetchBalance = async (address: string) => {
     try {
-      // Get USDT token balance and ETH balance in parallel
-      const [usdtBalance, ethBalanceResult] = await Promise.all([
-        publicClient.readContract({
-          address: morphismUSDT.address as `0x${string}`,
-          abi: [
-            {
-              constant: true,
-              inputs: [{ name: '_owner', type: 'address' }],
-              name: 'balanceOf',
-              outputs: [{ name: 'balance', type: 'uint256' }],
-              type: 'function',
-            },
-          ],
-          functionName: 'balanceOf',
-          args: [address as `0x${string}`],
-        }),
-        publicClient.getBalance({
-          address: address as `0x${string}`
-        })
-      ])
+      // Get USDT token balance
+      const usdtBalance = await publicClient.readContract({
+        address: morphismUSDT.address as `0x${string}`,
+        abi: [
+          {
+            constant: true,
+            inputs: [{ name: '_owner', type: 'address' }],
+            name: 'balanceOf',
+            outputs: [{ name: 'balance', type: 'uint256' }],
+            type: 'function',
+          },
+        ],
+        functionName: 'balanceOf',
+        args: [address as `0x${string}`],
+      })
       
       const formattedUsdtBalance = formatUnits(usdtBalance as bigint, morphismUSDT.decimals)
-      const formattedEthBalance = formatEther(ethBalanceResult)
       
       setBalance(formattedUsdtBalance)
-      setEthBalance(formattedEthBalance)
     } catch (error) {
       console.error('Error fetching balance:', error)
       setBalance('0.00')
-      setEthBalance('0.00')
     }
   }
 
@@ -192,9 +183,9 @@ export default function SendPage() {
 
         {/* Page Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold">Send Transaction</h1>
+          <h1 className="text-3xl font-bold">Send Money</h1>
           <p className="text-muted-foreground">
-            Send USDT to another user by phone number
+            Send money to another user by phone number
           </p>
         </div>
 
@@ -202,7 +193,6 @@ export default function SendPage() {
         <SendTransaction
           walletAddress={walletAddress}
           currentBalance={balance}
-          ethBalance={ethBalance}
           onCancel={handleBack}
         />
       </div>

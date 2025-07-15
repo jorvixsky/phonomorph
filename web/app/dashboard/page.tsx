@@ -7,7 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Plus, Download, Key, Wallet, ChevronDown, ChevronUp, Users, CheckCircle, Sparkles, Shield, AlertCircle, ArrowRight, RefreshCw, Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { getAuthToken, isAuthenticated, getWalletAddress, setWalletAddress } from '@/lib/utils'
-import { createPublicClient, http, formatUnits, formatEther } from 'viem'
+import { createPublicClient, http, formatUnits } from 'viem'
 import { wagmiConfig, morphismUSDT } from '@/lib/wagmi'
 
 interface WalletStatus {
@@ -16,7 +16,6 @@ interface WalletStatus {
   loading: boolean
   error?: string
   balance?: string
-  ethBalance?: string
   balanceLoading?: boolean
 }
 
@@ -52,34 +51,27 @@ export default function Dashboard() {
     try {
       setWalletStatus(prev => ({ ...prev, balanceLoading: true }))
       
-      // Get USDT token balance and ETH balance in parallel
-      const [usdtBalance, ethBalance] = await Promise.all([
-        publicClient.readContract({
-          address: morphismUSDT.address as `0x${string}`,
-          abi: [
-            {
-              constant: true,
-              inputs: [{ name: '_owner', type: 'address' }],
-              name: 'balanceOf',
-              outputs: [{ name: 'balance', type: 'uint256' }],
-              type: 'function',
-            },
-          ],
-          functionName: 'balanceOf',
-          args: [address as `0x${string}`],
-        }),
-        publicClient.getBalance({
-          address: address as `0x${string}`
-        })
-      ])
+      // Get USDT token balance
+      const usdtBalance = await publicClient.readContract({
+        address: morphismUSDT.address as `0x${string}`,
+        abi: [
+          {
+            constant: true,
+            inputs: [{ name: '_owner', type: 'address' }],
+            name: 'balanceOf',
+            outputs: [{ name: 'balance', type: 'uint256' }],
+            type: 'function',
+          },
+        ],
+        functionName: 'balanceOf',
+        args: [address as `0x${string}`],
+      })
       
       const formattedUsdtBalance = formatUnits(usdtBalance as bigint, morphismUSDT.decimals)
-      const formattedEthBalance = formatEther(ethBalance)
       
       setWalletStatus(prev => ({ 
         ...prev, 
         balance: formattedUsdtBalance,
-        ethBalance: formattedEthBalance,
         balanceLoading: false 
       }))
     } catch (error) {
@@ -87,7 +79,6 @@ export default function Dashboard() {
       setWalletStatus(prev => ({ 
         ...prev, 
         balance: '0.00',
-        ethBalance: '0.00',
         balanceLoading: false 
       }))
     }
@@ -301,14 +292,14 @@ export default function Dashboard() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Balance Card */}
-            <Card>
+          {/* Balance Card */}
+          <div className="flex justify-center">
+            <Card className="w-full max-w-md">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <Wallet className="h-5 w-5" />
-                    Balance
+                    Your Balance
                   </span>
                   <Button
                     variant="ghost"
@@ -321,63 +312,20 @@ export default function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div>
-                    <div className="text-3xl font-bold">
-                      {walletStatus.balanceLoading ? (
-                        <div className="flex items-center gap-2">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                          Loading...
-                        </div>
-                      ) : (
-                        `${parseFloat(walletStatus.balance || '0').toFixed(4)} USDT`
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Morphism USDT (Morph Holesky)
-                    </p>
+                <div className="text-center space-y-2">
+                  <div className="text-4xl font-bold">
+                    {walletStatus.balanceLoading ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                        Loading...
+                      </div>
+                    ) : (
+                      `$${parseFloat(walletStatus.balance || '0').toFixed(2)}`
+                    )}
                   </div>
-
-                  <div className="border-t pt-3">
-                    <div className="text-lg font-semibold">
-                      {walletStatus.balanceLoading ? (
-                        'Loading...'
-                      ) : (
-                        `${parseFloat(walletStatus.ethBalance || '0').toFixed(6)} ETH`
-                      )}
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      For transaction fees
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Wallet Address Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Wallet className="h-5 w-5" />
-                  Wallet Address
-                </CardTitle>
-                <CardDescription>
-                  Share this address to receive payments
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="bg-muted p-3 rounded border font-mono text-sm break-all">
-                    {walletStatus.address}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => navigator.clipboard.writeText(walletStatus.address || '')}
-                    className="w-full"
-                  >
-                    Copy Address
-                  </Button>
+                  <p className="text-sm text-muted-foreground">
+                    Available to send
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -391,7 +339,7 @@ export default function Dashboard() {
               size="lg"
             >
               <Send className="h-5 w-5" />
-              Send Transaction
+              Send Money
             </Button>
           </div>
 
