@@ -3,7 +3,7 @@ import { sign } from 'hono/jwt'
 
 const mockAuth = new Hono()
 
-mockAuth.get('/send', async (c) => {
+mockAuth.get('/send', (c) => {
   const { phoneNumber } = c.req.query()
 
   if (!phoneNumber) {

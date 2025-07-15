@@ -4,11 +4,11 @@ import { useEffect, useState, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Plus, Download, Key, Wallet, ChevronDown, ChevronUp, Users, CheckCircle, Sparkles, Shield, AlertCircle, ArrowRight, RefreshCw } from 'lucide-react'
+import { Plus, Download, Key, Wallet, ChevronDown, ChevronUp, Users, CheckCircle, Sparkles, Shield, AlertCircle, ArrowRight, RefreshCw, Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { getAuthToken, isAuthenticated, getWalletAddress, setWalletAddress } from '@/lib/utils'
-import { createPublicClient, http, formatEther } from 'viem'
-import { wagmiConfig } from '@/lib/wagmi'
+import { createPublicClient, http, formatUnits, formatEther } from 'viem'
+import { wagmiConfig, morphismUSDT } from '@/lib/wagmi'
 
 interface WalletStatus {
   exists: boolean
@@ -16,6 +16,7 @@ interface WalletStatus {
   loading: boolean
   error?: string
   balance?: string
+  ethBalance?: string
   balanceLoading?: boolean
 }
 
@@ -51,15 +52,34 @@ export default function Dashboard() {
     try {
       setWalletStatus(prev => ({ ...prev, balanceLoading: true }))
       
-      const balance = await publicClient.getBalance({
-        address: address as `0x${string}`
-      })
+      // Get USDT token balance and ETH balance in parallel
+      const [usdtBalance, ethBalance] = await Promise.all([
+        publicClient.readContract({
+          address: morphismUSDT.address as `0x${string}`,
+          abi: [
+            {
+              constant: true,
+              inputs: [{ name: '_owner', type: 'address' }],
+              name: 'balanceOf',
+              outputs: [{ name: 'balance', type: 'uint256' }],
+              type: 'function',
+            },
+          ],
+          functionName: 'balanceOf',
+          args: [address as `0x${string}`],
+        }),
+        publicClient.getBalance({
+          address: address as `0x${string}`
+        })
+      ])
       
-      const formattedBalance = formatEther(balance)
+      const formattedUsdtBalance = formatUnits(usdtBalance as bigint, morphismUSDT.decimals)
+      const formattedEthBalance = formatEther(ethBalance)
       
       setWalletStatus(prev => ({ 
         ...prev, 
-        balance: formattedBalance,
+        balance: formattedUsdtBalance,
+        ethBalance: formattedEthBalance,
         balanceLoading: false 
       }))
     } catch (error) {
@@ -67,6 +87,7 @@ export default function Dashboard() {
       setWalletStatus(prev => ({ 
         ...prev, 
         balance: '0.00',
+        ethBalance: '0.00',
         balanceLoading: false 
       }))
     }
@@ -300,20 +321,35 @@ export default function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold">
-                    {walletStatus.balanceLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                        Loading...
-                      </div>
-                    ) : (
-                      `${parseFloat(walletStatus.balance || '0').toFixed(4)} ETH`
-                    )}
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-3xl font-bold">
+                      {walletStatus.balanceLoading ? (
+                        <div className="flex items-center gap-2">
+                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                          Loading...
+                        </div>
+                      ) : (
+                        `${parseFloat(walletStatus.balance || '0').toFixed(4)} USDT`
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Morphism USDT (Morph Holesky)
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Morph Holesky Testnet
-                  </p>
+
+                  <div className="border-t pt-3">
+                    <div className="text-lg font-semibold">
+                      {walletStatus.balanceLoading ? (
+                        'Loading...'
+                      ) : (
+                        `${parseFloat(walletStatus.ethBalance || '0').toFixed(6)} ETH`
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      For transaction fees
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -345,6 +381,18 @@ export default function Dashboard() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-center">
+            <Button
+              onClick={() => router.push('/dashboard/wallet/send')}
+              className="flex items-center gap-2"
+              size="lg"
+            >
+              <Send className="h-5 w-5" />
+              Send Transaction
+            </Button>
           </div>
 
           <Alert>

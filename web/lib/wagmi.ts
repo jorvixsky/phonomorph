@@ -1,6 +1,14 @@
 import { type Chain } from "viem";
 import { http, createConfig } from "wagmi";
 
+// USDT Token on Morph Holesky
+export const morphismUSDT = {
+    address: "0x9E12AD42c4E4d2acFBADE01a96446e48e6764B98",
+    decimals: 18,
+    name: "Morphism USDT",
+    symbol: "USDT",
+} as const
+
 // const morph = {
 //     id: 2818,
 //     name: "Morph",
