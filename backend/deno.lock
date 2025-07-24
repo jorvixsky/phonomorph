@@ -2,11 +2,10 @@
   "version": "5",
   "specifiers": {
     "jsr:@hono/hono@^4.8.4": "4.8.4",
-    "npm:@types/node@*": "22.15.15",
-    "npm:twilio@*": "5.7.2",
-    "npm:twilio@^5.7.2": "5.7.2",
-    "npm:viem@*": "2.31.7_ws@8.18.2",
-    "npm:viem@^2.31.7": "2.31.7_ws@8.18.2"
+    "npm:@biconomy/account@^4.5.7": "4.5.7_typescript@5.8.3_viem@2.33.0__ws@8.18.2__typescript@5.8.3",
+    "npm:twilio@^5.7.2": "5.8.0",
+    "npm:viem@*": "2.33.0_ws@8.18.2_typescript@5.8.3",
+    "npm:viem@^2.33.0": "2.33.0_ws@8.18.2_typescript@5.8.3"
   },
   "jsr": {
     "@hono/hono@4.8.4": {
@@ -16,6 +15,14 @@
   "npm": {
     "@adraffy/ens-normalize@1.11.0": {
       "integrity": "sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg=="
+    },
+    "@biconomy/account@4.5.7_typescript@5.8.3_viem@2.33.0__ws@8.18.2__typescript@5.8.3": {
+      "integrity": "sha512-hJjbCJNanwDzXprKCCrHB1iV+MdQagt79Zuyv3+j1EojseWmFPXAvZagS2rcYJu1XPFlt65nckQLtW8I/eutnw==",
+      "dependencies": [
+        "merkletreejs",
+        "typescript",
+        "viem@2.33.0_typescript@5.8.3_ws@8.18.2"
+      ]
     },
     "@noble/ciphers@1.3.0": {
       "integrity": "sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw=="
@@ -47,14 +54,14 @@
         "@scure/base"
       ]
     },
-    "@types/node@22.15.15": {
-      "integrity": "sha512-R5muMcZob3/Jjchn5LcO8jdKwSCbzqmPB6ruBxMcf9kbxtniZHP327s6C37iOfuw8mbKK3cAQa7sEl7afLrQ8A==",
+    "abitype@1.0.8_typescript@5.8.3": {
+      "integrity": "sha512-ZeiI6h3GnW06uYDLx0etQtX/p8E24UaHHBj57RSjK7YBFe7iuVn07EDpOeP451D06sF27VOz9JJPlIKJmXgkEg==",
       "dependencies": [
-        "undici-types"
+        "typescript"
+      ],
+      "optionalPeers": [
+        "typescript"
       ]
-    },
-    "abitype@1.0.8": {
-      "integrity": "sha512-ZeiI6h3GnW06uYDLx0etQtX/p8E24UaHHBj57RSjK7YBFe7iuVn07EDpOeP451D06sF27VOz9JJPlIKJmXgkEg=="
     },
     "agent-base@6.0.2": {
       "integrity": "sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==",
@@ -65,8 +72,8 @@
     "asynckit@0.4.0": {
       "integrity": "sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q=="
     },
-    "axios@1.10.0": {
-      "integrity": "sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==",
+    "axios@1.11.0": {
+      "integrity": "sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==",
       "dependencies": [
         "follow-redirects",
         "form-data",
@@ -75,6 +82,9 @@
     },
     "buffer-equal-constant-time@1.0.1": {
       "integrity": "sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA=="
+    },
+    "buffer-reverse@1.0.1": {
+      "integrity": "sha512-M87YIUBsZ6N924W57vDwT/aOu8hw7ZgdByz6ijksLjmHJELBASmYTTlNHRgjE+pTsT9oJXGaDSgqqwfdHotDUg=="
     },
     "call-bind-apply-helpers@1.0.2": {
       "integrity": "sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==",
@@ -95,6 +105,9 @@
       "dependencies": [
         "delayed-stream"
       ]
+    },
+    "crypto-js@4.2.0": {
+      "integrity": "sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q=="
     },
     "dayjs@1.11.13": {
       "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg=="
@@ -149,8 +162,8 @@
     "follow-redirects@1.15.9": {
       "integrity": "sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ=="
     },
-    "form-data@4.0.3": {
-      "integrity": "sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==",
+    "form-data@4.0.4": {
+      "integrity": "sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==",
       "dependencies": [
         "asynckit",
         "combined-stream",
@@ -269,6 +282,14 @@
     "math-intrinsics@1.1.0": {
       "integrity": "sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g=="
     },
+    "merkletreejs@0.4.1": {
+      "integrity": "sha512-W2VSHeGTdAnWtedee+pgGn7SHvncMdINnMeHAaXrfarSaMNLff/pm7RCr/QXYxN6XzJFgJZY+28ejO0lAosW4A==",
+      "dependencies": [
+        "buffer-reverse",
+        "crypto-js",
+        "treeify"
+      ]
+    },
     "mime-db@1.52.0": {
       "integrity": "sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg=="
     },
@@ -284,7 +305,7 @@
     "object-inspect@1.13.4": {
       "integrity": "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew=="
     },
-    "ox@0.8.1": {
+    "ox@0.8.1_typescript@5.8.3": {
       "integrity": "sha512-e+z5epnzV+Zuz91YYujecW8cF01mzmrUtWotJ0oEPym/G82uccs7q0WDHTYL3eiONbTUEvcZrptAKLgTBD3u2A==",
       "dependencies": [
         "@adraffy/ens-normalize",
@@ -294,7 +315,11 @@
         "@scure/bip32",
         "@scure/bip39",
         "abitype",
-        "eventemitter3"
+        "eventemitter3",
+        "typescript"
+      ],
+      "optionalPeers": [
+        "typescript"
       ]
     },
     "proxy-from-env@1.1.0": {
@@ -352,8 +377,11 @@
         "side-channel-weakmap"
       ]
     },
-    "twilio@5.7.2": {
-      "integrity": "sha512-WNqB6OSdoWU7xtIodcoLjauxO5Uqd90B9YS525hEjKN+dVmN/UqibonChhDbUo1q3mDjtKPfuGvlUYRSrXOPfg==",
+    "treeify@1.1.0": {
+      "integrity": "sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A=="
+    },
+    "twilio@5.8.0": {
+      "integrity": "sha512-aJLBvI7ODLmFHI7ZYLBiMZKIdHuF9PrPeRM/GBMDg/AAzGXs4V8gEnNPHyTVThK0/8J48YHSqXMlQ+WJR5nxoQ==",
       "dependencies": [
         "axios",
         "dayjs",
@@ -364,11 +392,12 @@
         "xmlbuilder"
       ]
     },
-    "undici-types@6.21.0": {
-      "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="
+    "typescript@5.8.3": {
+      "integrity": "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==",
+      "bin": true
     },
-    "viem@2.31.7_ws@8.18.2": {
-      "integrity": "sha512-mpB8Hp6xK77E/b/yJmpAIQcxcOfpbrwWNItjnXaIA8lxZYt4JS433Pge2gg6Hp3PwyFtaUMh01j5L8EXnLTjQQ==",
+    "viem@2.33.0_typescript@5.8.3_ws@8.18.2": {
+      "integrity": "sha512-SxBM3CmeU+LWLlBclV9MPdbuFV8mQEl0NeRc9iyYU4a7Xb5sr5oku3s/bRGTPpEP+1hCAHYpM09/ui3/dQ6EsA==",
       "dependencies": [
         "@noble/curves",
         "@noble/hashes",
@@ -377,7 +406,28 @@
         "abitype",
         "isows",
         "ox",
+        "typescript",
         "ws"
+      ],
+      "optionalPeers": [
+        "typescript"
+      ]
+    },
+    "viem@2.33.0_ws@8.18.2_typescript@5.8.3": {
+      "integrity": "sha512-SxBM3CmeU+LWLlBclV9MPdbuFV8mQEl0NeRc9iyYU4a7Xb5sr5oku3s/bRGTPpEP+1hCAHYpM09/ui3/dQ6EsA==",
+      "dependencies": [
+        "@noble/curves",
+        "@noble/hashes",
+        "@scure/bip32",
+        "@scure/bip39",
+        "abitype",
+        "isows",
+        "ox",
+        "typescript",
+        "ws"
+      ],
+      "optionalPeers": [
+        "typescript"
       ]
     },
     "ws@8.18.2": {
@@ -450,15 +500,15 @@
     "https://deno.land/x/postgres@v0.17.0/query/oid.ts": "8c33e1325f34e4ca9f11a48b8066c8cfcace5f64bc1eb17ad7247af4936999e1",
     "https://deno.land/x/postgres@v0.17.0/query/query.ts": "edb473cbcfeff2ee1c631272afb25d079d06b66b5853f42492725b03ffa742b6",
     "https://deno.land/x/postgres@v0.17.0/query/transaction.ts": "8e75c3ce0aca97da7fe126e68f8e6c08d640e5c8d2016e62cee5c254bebe7fe8",
-    "https://deno.land/x/postgres@v0.17.0/query/types.ts": "a6dc8024867fe7ccb0ba4b4fa403ee5d474c7742174128c8e689c3b5e5eaa933",
     "https://deno.land/x/postgres@v0.17.0/utils/deferred.ts": "dd94f2a57355355c47812b061a51b55263f72d24e9cb3fdb474c7519f4d61083",
     "https://deno.land/x/postgres@v0.17.0/utils/utils.ts": "19c3527ddd5c6c4c49ae36397120274c7f41f9d3cbf479cb36065d23329e9f90"
   },
   "workspace": {
     "dependencies": [
       "jsr:@hono/hono@^4.8.4",
+      "npm:@biconomy/account@^4.5.7",
       "npm:twilio@^5.7.2",
-      "npm:viem@^2.31.7"
+      "npm:viem@^2.33.0"
     ]
   }
 }

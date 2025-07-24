@@ -1,8 +1,9 @@
 {
   "imports": {
+    "@biconomy/account": "npm:@biconomy/account@^4.5.7",
     "hono": "jsr:@hono/hono@^4.8.4",
     "twilio": "npm:twilio@^5.7.2",
-    "viem": "npm:viem@^2.31.7"
+    "viem": "npm:viem@^2.33.0"
   },
   "tasks": {
     "start": "deno run --allow-net --allow-env --env-file main.ts",
