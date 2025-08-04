@@ -37,20 +37,10 @@ export default function Dashboard() {
     transport: http()
   })
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-  
-  useEffect(() => {
-    if (isMounted) {
-      checkWalletExists()
-    }
-  }, [isMounted, checkWalletExists])
-
   const fetchBalance = useCallback(async (address: string) => {
     try {
       setWalletStatus(prev => ({ ...prev, balanceLoading: true }))
-      
+
       // Get USDT token balance
       const usdtBalance = await publicClient.readContract({
         address: morphismUSDT.address as `0x${string}`,
@@ -66,20 +56,20 @@ export default function Dashboard() {
         functionName: 'balanceOf',
         args: [address as `0x${string}`],
       })
-      
+
       const formattedUsdtBalance = formatUnits(usdtBalance as bigint, morphismUSDT.decimals)
-      
-      setWalletStatus(prev => ({ 
-        ...prev, 
+
+      setWalletStatus(prev => ({
+        ...prev,
         balance: formattedUsdtBalance,
-        balanceLoading: false 
+        balanceLoading: false
       }))
     } catch (error) {
       console.error('Error fetching balance:', error)
-      setWalletStatus(prev => ({ 
-        ...prev, 
+      setWalletStatus(prev => ({
+        ...prev,
         balance: '0.00',
-        balanceLoading: false 
+        balanceLoading: false
       }))
     }
   }, [publicClient])
@@ -159,6 +149,16 @@ export default function Dashboard() {
       })
     }
   }, [router, fetchBalance])
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (isMounted) {
+      checkWalletExists()
+    }
+  }, [isMounted, checkWalletExists])
 
   const handleCreateWallet = async () => {
     try {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import SendTransaction from '@/components/wallet/send-transaction'
 import { getAuthToken, isAuthenticated, getWalletAddress } from '@/lib/utils'
@@ -18,21 +18,6 @@ export default function SendPage() {
   const [error, setError] = useState('')
   const router = useRouter()
 
-  // Create public client for reading balance
-  const publicClient = createPublicClient({
-    chain: wagmiConfig.chains[0], // Use the configured chain (Morph Holesky)
-    transport: http()
-  })
-
-  useEffect(() => {
-    // Check if user is authenticated
-    if (!isAuthenticated()) {
-      router.push('/')
-      return
-    }
-
-    loadWalletData()
-  }, [router, loadWalletData])
 
   const loadWalletData = async () => {
     try {
@@ -82,6 +67,22 @@ export default function SendPage() {
       setIsLoading(false)
     }
   }
+
+  // Create public client for reading balance
+  const publicClient = createPublicClient({
+    chain: wagmiConfig.chains[0], // Use the configured chain (Morph Holesky)
+    transport: http()
+  })
+
+  useEffect(() => {
+    // Check if user is authenticated
+    if (!isAuthenticated()) {
+      router.push('/')
+      return
+    }
+
+    loadWalletData()
+  }, [router, loadWalletData])
 
   const fetchBalance = async (address: string) => {
     try {
