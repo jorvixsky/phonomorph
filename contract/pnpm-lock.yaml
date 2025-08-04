@@ -11,9 +11,15 @@ importers:
       '@openzeppelin/contracts':
         specifier: ^5.3.0
         version: 5.3.0
+      '@openzeppelin/contracts-upgradeable':
+        specifier: ^5.4.0
+        version: 5.4.0(@openzeppelin/contracts@5.3.0)
       '@openzeppelin/hardhat-upgrades':
         specifier: ^3.9.1
         version: 3.9.1(@nomicfoundation/hardhat-ethers@3.0.9(ethers@6.15.0)(hardhat@2.25.0(ts-node@10.9.2(@types/node@24.0.13)(typescript@5.0.4))(typescript@5.0.4)))(@nomicfoundation/hardhat-verify@2.0.14(hardhat@2.25.0(ts-node@10.9.2(@types/node@24.0.13)(typescript@5.0.4))(typescript@5.0.4)))(ethers@6.15.0)(hardhat@2.25.0(ts-node@10.9.2(@types/node@24.0.13)(typescript@5.0.4))(typescript@5.0.4))
+      dotenv:
+        specifier: ^17.2.0
+        version: 17.2.0
     devDependencies:
       '@nomicfoundation/hardhat-ignition':
         specifier: ^0.15.12
@@ -492,6 +498,11 @@ packages:
   '@nomicfoundation/solidity-analyzer@0.1.2':
     resolution: {integrity: sha512-q4n32/FNKIhQ3zQGGw5CvPF6GTvDCpYwIf7bEY/dZTZbgfDsHyjJwURxUJf3VQuuJj+fDIFl4+KkBVbw4Ef6jA==}
     engines: {node: '>= 12'}
+
+  '@openzeppelin/contracts-upgradeable@5.4.0':
+    resolution: {integrity: sha512-STJKyDzUcYuB35Zub1JpWW58JxvrFFVgQ+Ykdr8A9PGXgtq/obF5uoh07k2XmFyPxfnZdPdBdhkJ/n2YxJ87HQ==}
+    peerDependencies:
+      '@openzeppelin/contracts': 5.4.0
 
   '@openzeppelin/contracts@5.3.0':
     resolution: {integrity: sha512-zj/KGoW7zxWUE8qOI++rUM18v+VeLTTzKs/DJFkSzHpQFPD/jKKF0TrMxBfGLl3kpdELCNccvB3zmofSzm4nlA==}
@@ -1207,6 +1218,10 @@ packages:
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
+
+  dotenv@17.2.0:
+    resolution: {integrity: sha512-Q4sgBT60gzd0BB0lSyYD3xM4YxrXA9y4uBDof1JNYGzOXrQdQ6yX+7XIAqoFOGQFOTK1D3Hts5OllpxMDZFONQ==}
+    engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -3229,6 +3244,10 @@ snapshots:
       '@nomicfoundation/solidity-analyzer-linux-x64-musl': 0.1.2
       '@nomicfoundation/solidity-analyzer-win32-x64-msvc': 0.1.2
 
+  '@openzeppelin/contracts-upgradeable@5.4.0(@openzeppelin/contracts@5.3.0)':
+    dependencies:
+      '@openzeppelin/contracts': 5.3.0
+
   '@openzeppelin/contracts@5.3.0': {}
 
   '@openzeppelin/defender-sdk-base-client@2.7.0':
@@ -4136,6 +4155,8 @@ snapshots:
   dir-glob@3.0.1:
     dependencies:
       path-type: 4.0.0
+
+  dotenv@17.2.0: {}
 
   dunder-proto@1.0.1:
     dependencies:

@@ -1,0 +1,122 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0x09Fb228D2b9Dcf45aCBa1491cbDe3f08a1277F19",
+      "txHash": "0x241b9526c21c37f5186d779279ae7d0df037a7e1287d47b73336a1d4b11d84a8",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "650490b6ce29fb805976fddc1393f67e336d344744851a87bb45b7adcace4f13": {
+      "address": "0x6a0AB3E43e96C4AC6E1b24Ec4dBb09bb56c42C33",
+      "txHash": "0x3b9d55a90796e974db7d6b1611298b70fa97ea88a0c54d8f5fd637a5849b0c17",
+      "layout": {
+        "solcVersion": "0.8.30",
+        "storage": [
+          {
+            "label": "encryptedPhoneNumberToAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_string_memory_ptr,t_address)",
+            "contract": "Phonomorph",
+            "src": "contracts/Phonomorph.sol:22"
+          },
+          {
+            "label": "phonomorphEnabled",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_bool",
+            "contract": "Phonomorph",
+            "src": "contracts/Phonomorph.sol:28"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)86_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_mapping(t_string_memory_ptr,t_address)": {
+            "label": "mapping(string => address)",
+            "numberOfBytes": "32"
+          },
+          "t_string_memory_ptr": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.30;
 
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /**
  * @title Phonomorph
  * @author Jordi Planas
  * @notice This contract manages the association between encrypted phone numbers and Ethereum addresses
- * @dev Inherits from OpenZeppelin's Ownable contract for access control
+ * @dev Inherits from OpenZeppelin's upgradeable contracts for proxy compatibility
  * @custom:security-contact jorvixsky@proton.me
  */
-contract Phonomorph is Ownable {
+contract Phonomorph is Initializable, OwnableUpgradeable {
     
     // ============ State Variables ============
     
@@ -41,13 +42,17 @@ contract Phonomorph is Ownable {
      */
     event PhonomorphStatusChanged(bool indexed enabled);
 
-    // ============ Constructor ============
+    // ============ Initializer ============
     
     /**
-     * @notice Initializes the contract with the specified owner
+     * @notice Proxy-safe initializer instead of constructor
+     * @dev Initializes the contract with the specified owner using upgradeable pattern
      * @param _owner The address that will be set as the contract owner
+     * @custom:requirements Can only be called once due to initializer modifier
+     * @custom:effects Initializes the OwnableUpgradeable contract and sets phonomorphEnabled to true
      */
-    constructor(address _owner) Ownable(_owner) {
+    function initialize(address _owner) public initializer {
+        __Ownable_init(_owner);
         phonomorphEnabled = true;
     }
 
