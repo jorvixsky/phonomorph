@@ -91,7 +91,7 @@ export default function ImportMnemonic({ onImport, onCancel }: ImportMnemonicPro
         throw new Error('Authentication required')
       }
 
-      const response = await fetch('http://localhost:8000/wallet/import-address', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/wallet/import-address`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

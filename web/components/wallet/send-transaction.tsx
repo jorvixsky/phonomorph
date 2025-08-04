@@ -117,7 +117,7 @@ export default function SendTransaction({ currentBalance, onCancel }: SendTransa
         return
       }
 
-      const response = await fetch('http://localhost:8000/wallet/send', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/wallet/send`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

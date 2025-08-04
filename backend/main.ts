@@ -9,7 +9,7 @@ const app = new Hono()
 
 // Configure CORS to allow requests from frontend
 app.use('*', cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'], // Common Next.js ports
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://https://phonomorph-mauve.vercel.app/'], // Common Next.js ports
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
   credentials: true,

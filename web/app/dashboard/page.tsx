@@ -96,7 +96,7 @@ export default function Dashboard() {
         return
       }
 
-      const response = await fetch('http://localhost:8000/wallet/get', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/wallet/get`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -173,7 +173,7 @@ export default function Dashboard() {
         return
       }
 
-      const response = await fetch('http://localhost:8000/wallet/create', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/wallet/create`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

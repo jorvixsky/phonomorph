@@ -53,7 +53,7 @@ export default function VerifyPage() {
             }
 
             // Call the mock auth verify endpoint
-            const response = await fetch(`http://localhost:8000/mock-auth/verify?phoneNumber=${encodeURIComponent(phoneNumber)}&code=${encodeURIComponent(verificationCode)}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/mock-auth/verify?phoneNumber=${encodeURIComponent(phoneNumber)}&code=${encodeURIComponent(verificationCode)}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export default function VerifyPage() {
             }
 
             // Call the mock auth send endpoint to resend code
-            const response = await fetch(`http://localhost:8000/mock-auth/send?phoneNumber=${encodeURIComponent(phoneNumber)}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/mock-auth/send?phoneNumber=${encodeURIComponent(phoneNumber)}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

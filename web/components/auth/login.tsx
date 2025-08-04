@@ -25,7 +25,7 @@ export default function LoginForm() {
         try {
             const fullPhoneNumber = "+" + countryCode + phoneNumber;
 
-            const response = await fetch(`http://localhost:8000/mock-auth/send?phoneNumber=${encodeURIComponent(fullPhoneNumber)}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/mock-auth/send?phoneNumber=${encodeURIComponent(fullPhoneNumber)}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

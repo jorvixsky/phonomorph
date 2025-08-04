@@ -39,7 +39,7 @@ export default function SendPage() {
         await fetchBalance(storedAddress)
       } else {
         // If not in localStorage, fetch from backend
-        const response = await fetch('http://localhost:8000/wallet/get', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/wallet/get`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
