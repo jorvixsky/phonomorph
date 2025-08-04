@@ -23,7 +23,7 @@ mockAuth.get('/verify', async (c) => {
   }
 
   const token = await sign({
-    aud: 'https://phonemorph.com',
+    aud: 'https://phonomorph.com',
     sub: phoneNumber,
     exp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).getTime() / 1000,
   }, Deno.env.get('JWT_SECRET')!)
