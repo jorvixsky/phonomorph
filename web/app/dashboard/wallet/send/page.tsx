@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import SendTransaction from '@/components/wallet/send-transaction'
 import { getAuthToken, isAuthenticated, getWalletAddress } from '@/lib/utils'
@@ -32,7 +32,7 @@ export default function SendPage() {
     }
 
     loadWalletData()
-  }, [router])
+  }, [router, loadWalletData])
 
   const loadWalletData = async () => {
     try {
@@ -191,7 +191,6 @@ export default function SendPage() {
 
         {/* Send Transaction Component */}
         <SendTransaction
-          walletAddress={walletAddress}
           currentBalance={balance}
           onCancel={handleBack}
         />

@@ -45,7 +45,7 @@ export default function Dashboard() {
     if (isMounted) {
       checkWalletExists()
     }
-  }, [isMounted])
+  }, [isMounted, checkWalletExists])
 
   const fetchBalance = useCallback(async (address: string) => {
     try {

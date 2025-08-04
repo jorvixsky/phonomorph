@@ -6,24 +6,23 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Send, CheckCircle, AlertCircle, ArrowRight, Loader2, Clock, ExternalLink } from 'lucide-react'
+import { Send, CheckCircle, AlertCircle, ArrowRight, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { getAuthToken, isAuthenticated } from '@/lib/utils'
 
 interface SendTransactionProps {
-  walletAddress?: string
   currentBalance?: string
   onCancel?: () => void
 }
 
-export default function SendTransaction({ walletAddress, currentBalance, onCancel }: SendTransactionProps) {
+export default function SendTransaction({ currentBalance, onCancel }: SendTransactionProps) {
   const [recipient, setRecipient] = useState('')
   const [amount, setAmount] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [transactionHash, setTransactionHash] = useState('')
-  const [recipientAddress, setRecipientAddress] = useState('')
+
   const [recipientError, setRecipientError] = useState('')
   const [amountError, setAmountError] = useState('')
   const router = useRouter()
@@ -137,7 +136,6 @@ export default function SendTransaction({ walletAddress, currentBalance, onCance
 
       const data = await response.json()
       setTransactionHash(data.hash)
-      setRecipientAddress(data.recipientAddress)
       setSuccess('Transaction sent successfully!')
       
       // Clear form
@@ -207,7 +205,6 @@ export default function SendTransaction({ walletAddress, currentBalance, onCance
                  onClick={() => {
                    setSuccess('')
                    setTransactionHash('')
-                   setRecipientAddress('')
                  }}
                  className="flex-1"
                >
